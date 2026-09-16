@@ -1,5 +1,14 @@
 import type { NextConfig } from "next";
 
-const config: NextConfig = { output: "export", trailingSlash: true, images: { unoptimized: true }, reactStrictMode: true };
+const basePath = process.env.NEXT_BASE_PATH ?? "";
+
+const config: NextConfig = {
+  output: "export",
+  basePath,
+  assetPrefix: basePath || undefined,
+  trailingSlash: true,
+  images: { unoptimized: true },
+  reactStrictMode: true,
+};
 
 export default config;
