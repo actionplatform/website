@@ -93,15 +93,21 @@ export function ProjectsScreen() {
   ];
   return (
     <Frame active="Projects" title="Projects">
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3">
         {projects.map((p) => (
           <div key={p.name} className="rounded-xl border border-border bg-surface p-4">
             <div className="flex items-center gap-3">
-              <div className="flex size-10 items-center justify-center rounded-lg border border-[#303030]"><FolderGit2 className="size-5 text-secondary" strokeWidth={1.5} /></div>
+              <div className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-[#303030]"><FolderGit2 className="size-5 text-secondary" strokeWidth={1.5} /></div>
               <div className="min-w-0 flex-1"><div className="truncate text-sm font-semibold">{p.name}</div><div className="truncate font-mono text-xs text-secondary">{p.name}</div></div>
-              <ArrowUpRight className="size-4 text-secondary" strokeWidth={1.75} />
+              <div className="hidden items-center gap-4 whitespace-nowrap text-xs text-secondary sm:flex">
+                <span className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-status-ok" />Active</span>
+                <span className="flex items-center gap-1.5"><Layers className="size-3.5" strokeWidth={1.75} />{p.apps} apps</span>
+                <span className="flex items-center gap-1.5"><Users className="size-3.5" strokeWidth={1.75} />{p.team}</span>
+                <span>Updated {p.when}</span>
+              </div>
+              <ArrowUpRight className="size-4 shrink-0 text-secondary" strokeWidth={1.75} />
             </div>
-            <div className="mt-3 grid grid-cols-[max-content_minmax(0,1fr)] gap-x-4 gap-y-1.5 text-xs text-secondary">
+            <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 whitespace-nowrap text-xs text-secondary sm:hidden">
               <span className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-status-ok" />Active</span>
               <span className="flex items-center gap-1.5"><Layers className="size-3.5" strokeWidth={1.75} />{p.apps} apps</span>
               <span className="flex items-center gap-1.5"><Users className="size-3.5" strokeWidth={1.75} />{p.team}</span>
