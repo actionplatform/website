@@ -1,4 +1,5 @@
 import { ArrowRight, Boxes, Cloud, GitBranch, KeyRound, Puzzle, Rocket, Tag, Terminal } from "lucide-react";
+import Link from "next/link";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { DemoPanel, DeploymentsScreen, LandingHeader, ProjectsScreen, ReleasesScreen, Reveal, TerminalDemo } from "@/features/landing";
@@ -39,7 +40,7 @@ export default function Home() {
             <h1 className="mt-5 max-w-[16ch] text-[38px] font-semibold leading-[1.08] tracking-tight md:text-[52px] xl:text-[60px]">Action Platform</h1>
             <p className="mt-5 max-w-[52ch] text-base leading-7 text-secondary md:text-lg">Standardize how every project is created, versioned, released, and deployed—from the web, CLI, or an AI agent over MCP.</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a href="https://github.com/actionplatform/action-platform/blob/master/docs/start_getting_started.md" target="_blank" rel="noopener noreferrer" className="sm:w-auto"><Button size="lg" className="h-12 w-full whitespace-nowrap sm:w-auto">Get started <ArrowRight className="size-4" strokeWidth={2} /></Button></a>
+              <Link href="/docs/start_getting_started/" className="sm:w-auto"><Button size="lg" className="h-12 w-full whitespace-nowrap sm:w-auto">Get started <ArrowRight className="size-4" strokeWidth={2} /></Button></Link>
               <a href="https://github.com/actionplatform/action-platform" target="_blank" rel="noopener noreferrer" className="sm:w-auto"><Button size="lg" variant="outline" className="h-12 w-full whitespace-nowrap sm:w-auto">View on GitHub</Button></a>
             </div>
             <p className="mt-4 text-[13px] text-muted-foreground">Open source · No vendor lock-in</p>
@@ -135,7 +136,7 @@ export default function Home() {
         <div className={`${container} flex flex-col gap-3 py-8 text-sm text-secondary md:flex-row md:items-center md:justify-between`}>
           <div className="flex items-center gap-2"><Logo className="size-4" /><span>action-platform</span></div>
           <div className="flex flex-wrap gap-4">
-            <a href="https://github.com/actionplatform/action-platform/tree/master/docs" target="_blank" rel="noopener noreferrer" className="hover:text-foreground">Docs</a>
+            <Link href="/docs/" className="hover:text-foreground">Docs</Link>
             <a href="https://github.com/actionplatform" target="_blank" rel="noopener noreferrer" className="hover:text-foreground">GitHub</a>
             <a href="https://pypi.org/project/action-platform/" target="_blank" rel="noopener noreferrer" className="hover:text-foreground">PyPI</a>
           </div>

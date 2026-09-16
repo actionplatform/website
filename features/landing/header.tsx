@@ -1,17 +1,21 @@
 "use client";
 
 import { Menu as MenuIcon, X } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 
 const LINKS = [
-  { label: "Product", href: "#product" },
+  { label: "Product", href: "/#product" },
+  { label: "Docs", href: "/docs/" },
   { label: "Templates", href: "https://github.com/actionplatform/templates" },
-  { label: "Docs", href: "https://github.com/actionplatform/action-platform/tree/master/docs" },
   { label: "GitHub", href: "https://github.com/actionplatform" },
 ];
 
+const internal = (href: string) => href.startsWith("/");
+
+const mobile = "flex h-11 items-center rounded-md px-2 text-sm text-secondary hover:bg-surface-hover hover:text-foreground";
 const link = "inline-flex h-9 items-center rounded-md px-3 text-sm text-secondary transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground";
 
 export function LandingHeader() {
@@ -27,11 +31,11 @@ export function LandingHeader() {
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-background/95">
       <div className="mx-auto flex h-14 max-w-[1400px] items-center gap-2.5 px-5 md:h-16 md:px-8">
-        <a href="#" className="flex items-center gap-2.5 rounded-md focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground"><Logo className="size-5" /><span className="text-[15px] font-semibold">action-platform</span></a>
+        <Link href="/" className="flex items-center gap-2.5 rounded-md focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground"><Logo className="size-5" /><span className="text-[15px] font-semibold">action-platform</span></Link>
         <nav aria-label="Main" className="ml-auto hidden items-center gap-1 lg:flex">
-          {LINKS.map((l) => l.href.startsWith("#") ? <a key={l.label} href={l.href} className={link}>{l.label}</a> : <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer" className={link}>{l.label}</a>)}
+          {LINKS.map((l) => internal(l.href) ? <Link key={l.label} href={l.href} className={link}>{l.label}</Link> : <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer" className={link}>{l.label}</a>)}
           <span aria-hidden className="mx-2 h-5 w-px bg-border" />
-          <a href="https://github.com/actionplatform/action-platform/blob/master/docs/start_getting_started.md" target="_blank" rel="noopener noreferrer"><Button size="sm" className="h-9">Get started</Button></a>
+          <Link href="/docs/start_getting_started/"><Button size="sm" className="h-9">Get started</Button></Link>
         </nav>
         <button type="button" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} aria-controls="landing-menu" onClick={() => setOpen((v) => !v)} className="ml-auto flex size-11 items-center justify-center rounded-md text-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground lg:hidden">
           {open ? <X className="size-5" strokeWidth={1.75} /> : <MenuIcon className="size-5" strokeWidth={1.75} />}
@@ -41,11 +45,11 @@ export function LandingHeader() {
         <nav id="landing-menu" aria-label="Main" className="border-t border-border bg-background px-5 py-3 lg:hidden">
           <ul className="space-y-1">
             {LINKS.map((l) => (
-              <li key={l.label}><a href={l.href} target={l.href.startsWith("#") ? undefined : "_blank"} rel={l.href.startsWith("#") ? undefined : "noopener noreferrer"} onClick={() => setOpen(false)} className="flex h-11 items-center rounded-md px-2 text-sm text-secondary hover:bg-surface-hover hover:text-foreground">{l.label}</a></li>
+              <li key={l.label}>{internal(l.href) ? <Link href={l.href} onClick={() => setOpen(false)} className={mobile}>{l.label}</Link> : <a href={l.href} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)} className={mobile}>{l.label}</a>}</li>
             ))}
           </ul>
           <div className="mt-3 border-t border-border pt-3">
-            <a href="https://github.com/actionplatform/action-platform/blob/master/docs/start_getting_started.md" target="_blank" rel="noopener noreferrer"><Button className="h-11 w-full">Get started</Button></a>
+            <Link href="/docs/start_getting_started/"><Button className="h-11 w-full">Get started</Button></Link>
           </div>
         </nav>
       )}
