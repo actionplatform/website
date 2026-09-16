@@ -1,0 +1,13 @@
+[project]
+name = "website"
+type = "web"
+language = "node"
+ci = "github"
+
+[source_host]
+kind = "github"
+repo = "actionplatform/website"
+
+[release]
+strategy = "semver"
+changelog = "conventional"
