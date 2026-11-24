@@ -16,7 +16,7 @@ const FEATURES = [
   { icon: GitBranch, title: "Git-flow, enforced", text: "Branch kinds, conventional commits and protected branches checked by hooks, CI and the platform alike." },
   { icon: Tag, title: "Releases", text: "Versions, changelog and tags cut from the platform, the CLI or an AI agent. A deploy always ships a release." },
   { icon: Cloud, title: "Deploys without keys", text: "Lambda through a deploy proxy in your own AWS account: short-lived credentials per app, no access key anywhere." },
-  { icon: Puzzle, title: "Plugins", text: "Deploy targets, overlays and tools as Python packages; the platform draws their settings from what they declare." },
+  { icon: Puzzle, title: "Plugins", text: "Deploy targets, overlays, tools and who has access to each service, as Python packages; the platform draws their settings from what they declare." },
   { icon: Terminal, title: "CLI and MCP", text: "Everything the web does, from the terminal or from Claude Code, Codex and Cursor over MCP." },
 ];
 
