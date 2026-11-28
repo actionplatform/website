@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata = {
+  metadataBase: new URL("https://actionplatform.io"),
   title: "Action Platform",
   description: "Standardize how every project is created, versioned, released, and deployed — from the web, CLI, or an AI agent over MCP.",
 };
