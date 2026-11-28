@@ -24,10 +24,10 @@ export function Reveal({ children, className, delay = 0 }: { children: ReactNode
 }
 
 const LINES = [
-  "$ action-platform init shop-api --type web --stack python --cloud aws/lambda",
-  "$ action-platform release            # v0.1.0 tagged and published",
-  "$ action-platform deploy --stage dev # credentials from the deploy proxy, no AWS key",
-  "→ https://evw6kw2ad9.execute-api.us-east-1.amazonaws.com/health  {\"status\":\"ok\",\"version\":\"0.1.0\"}",
+  "$ action-platform init web python fastapi --name shop-api --cloud aws/lambda",
+  "$ action-platform release            # v0.0.1 tagged and published",
+  "$ action-platform deploy --scope dev # short-lived credentials, no AWS key",
+  "→ https://evw6kw2ad9.execute-api.us-east-1.amazonaws.com/health  {\"status\":\"ok\",\"version\":\"0.0.1\"}",
 ];
 
 export function Terminal() {
