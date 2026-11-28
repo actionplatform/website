@@ -1,7 +1,8 @@
 export const REPO = "https://github.com/actionplatform/action-platform";
 export const RAW = "https://raw.githubusercontent.com/actionplatform/action-platform/master/docs";
+export const SITE = "https://actionplatform.io";
 
-export type DocPage = { slug: string; title: string };
+export type DocPage = { slug: string; title: string; description?: string };
 export type DocGroup = { title: string; pages: DocPage[] };
 export type DocIndex = { title: string; source: string; groups: DocGroup[] };
 
@@ -19,6 +20,10 @@ export async function fetchDoc(slug: string, init?: RequestInit): Promise<string
 
 export function pagesOf(index: DocIndex): DocPage[] {
   return index.groups.flatMap((g) => g.pages);
+}
+
+export function homePage(index: DocIndex): DocPage | null {
+  return pagesOf(index)[0] ?? null;
 }
 
 export function findPage(index: DocIndex, slug: string): { group: DocGroup; page: DocPage } | null {
