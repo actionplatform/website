@@ -15,15 +15,15 @@ const FEATURES = [
   { icon: Boxes, title: "Templates", text: "Web APIs, libraries, docs and plugins in seven languages — a repository ready to ship in one click." },
   { icon: GitBranch, title: "Git-flow, enforced", text: "Branch kinds, conventional commits and protected branches checked by hooks, CI and the platform alike." },
   { icon: Tag, title: "Releases", text: "Versions, changelog and tags cut from the platform, the CLI or an AI agent. A deploy always ships a release." },
-  { icon: Cloud, title: "Deploys without keys", text: "Lambda through a deploy proxy in your own AWS account: short-lived credentials per app, no access key anywhere." },
+  { icon: Cloud, title: "Deploys without keys", text: "Lambda through an OIDC provider and a deploy role in your own AWS account: one stack for the organization, credentials scoped to one app and expiring in an hour, no access key anywhere." },
   { icon: Puzzle, title: "Plugins", text: "Deploy targets, overlays, tools and who has access to each service, as Python packages; the platform draws their settings from what they declare." },
-  { icon: Terminal, title: "CLI and MCP", text: "Everything the web does, from the terminal or from Claude Code, Codex and Cursor over MCP." },
+  { icon: Terminal, title: "CLI and MCP", text: "The CLI covers a project's lifecycle: init, release, deploy, rollback, diagnose. MCP, from Claude Code, Codex or Cursor, adds the organization: projects, teams and members." },
 ];
 
 const STEPS = [
   { n: "01", title: "Connect GitHub", text: "OAuth or a GitHub App — the platform pushes and releases as your organization." },
   { n: "02", title: "Create an app from a template", text: "Pick the stack, the cloud overlay and the CI; the repository is born with git-flow, quality checks and a health route." },
-  { n: "03", title: "Release, then deploy", text: "Cut 0.1.0 from main, deploy it to dev or prod. Rollback, diagnose and tear down from the same screen." },
+  { n: "03", title: "Release, then deploy", text: "Cut 0.0.1 from main, deploy it to a scope. Tear down from the web; roll back and diagnose from the CLI or MCP." },
 ];
 
 const container = "mx-auto w-full max-w-[1400px] px-5 md:px-8";
@@ -125,9 +125,9 @@ export default function Home() {
             <div className="max-w-xl">
               <div className="flex items-center gap-2 text-secondary"><KeyRound className="size-4" strokeWidth={1.75} /><span className="text-sm">No cloud key on the platform</span></div>
               <h2 className="mt-3 text-2xl font-semibold tracking-tight md:text-3xl">Your account decides who deploys what.</h2>
-              <p className="mt-2 text-secondary">A small proxy in your AWS account grants deploys per app and hands out credentials that expire in an hour. The platform signs a token; IAM does the rest.</p>
+              <p className="mt-2 text-secondary">One CloudFormation stack per organization adds an OIDC provider and the ActionPlatformDeploy role to your AWS account. The platform signs a token; a session tag scopes the credentials to one app, and they expire in an hour.</p>
             </div>
-            <a href="https://github.com/actionplatform/apx-aws-lambda" target="_blank" rel="noopener noreferrer" className="w-full md:w-auto"><Button size="lg" variant="outline" className="h-12 w-full whitespace-nowrap md:w-auto"><Rocket className="size-4" strokeWidth={1.75} /> How the deploy proxy works</Button></a>
+            <a href="https://github.com/actionplatform/apx-aws-lambda" target="_blank" rel="noopener noreferrer" className="w-full md:w-auto"><Button size="lg" variant="outline" className="h-12 w-full whitespace-nowrap md:w-auto"><Rocket className="size-4" strokeWidth={1.75} /> How the AWS connection works</Button></a>
           </Reveal>
         </section>
       </main>

@@ -1,4 +1,4 @@
-import { ArrowUpRight, Building2, ChevronDown, Cloud, FolderGit2, GitBranch, Layers, LayoutTemplate, ListChecks, Puzzle, Rocket, Settings, Tag, Users } from "lucide-react";
+import { ArrowUpRight, ChevronDown, Cloud, FolderGit2, GitBranch, Layers, LayoutDashboard, LayoutTemplate, ListChecks, MoreHorizontal, Plug, Rocket, Settings, Tag, Users } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { Badge } from "@/components/ui/badge";
 import { Panel, PanelBody, PanelHeader } from "@/components/ui/panel";
@@ -6,11 +6,8 @@ import { cn } from "@/lib/utils";
 import { LiveStatus } from "./reveal";
 
 const NAV = [
-  { label: "Projects", icon: FolderGit2 },
-  { label: "Templates", icon: LayoutTemplate },
-  { label: "Plugins", icon: Puzzle },
-  { label: "Organization", icon: Building2 },
-  { label: "Settings", icon: Settings },
+  { label: "Build", items: [{ label: "Dashboard", icon: LayoutDashboard }, { label: "Projects", icon: FolderGit2 }, { label: "Templates", icon: LayoutTemplate }] },
+  { label: "Organization", items: [{ label: "Connect", icon: Plug }, { label: "Team", icon: Users }, { label: "Settings", icon: Settings }] },
 ];
 
 export function Frame({ children, active, title, className }: { children: React.ReactNode; active: string; title: string; className?: string }) {
@@ -19,11 +16,18 @@ export function Frame({ children, active, title, className }: { children: React.
       <div className="flex">
         <aside className="hidden w-[168px] shrink-0 border-r border-border bg-sidebar md:block">
           <div className="flex h-11 items-center gap-2 border-b border-border px-3"><Logo className="size-4" /><span className="text-xs font-semibold">action-platform</span></div>
-          <ul className="space-y-0.5 p-2">
-            {NAV.map(({ label, icon: Icon }) => (
-              <li key={label} className={cn("flex h-8 items-center gap-2 rounded-md px-2 text-xs", label === active ? "bg-surface-selected text-foreground" : "text-secondary")}><Icon className="size-3.5" strokeWidth={1.75} />{label}</li>
+          <nav className="p-2">
+            {NAV.map((group) => (
+              <div key={group.label} className="mb-1">
+                <div className="px-2 pb-1 pt-2 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">{group.label}</div>
+                <ul className="space-y-0.5">
+                  {group.items.map(({ label, icon: Icon }) => (
+                    <li key={label} className={cn("flex h-8 items-center gap-2 rounded-md px-2 text-xs", label === active ? "bg-surface-selected text-foreground" : "text-secondary")}><Icon className="size-3.5" strokeWidth={1.75} />{label}</li>
+                  ))}
+                </ul>
+              </div>
             ))}
-          </ul>
+          </nav>
         </aside>
         <div className="min-w-0 flex-1">
           <div className="flex h-11 items-center gap-2 border-b border-border px-4 md:hidden"><Logo className="size-4" /><span className="text-xs font-semibold">action-platform</span></div>
@@ -39,49 +43,67 @@ export function Frame({ children, active, title, className }: { children: React.
 
 export function DeploymentsScreen() {
   const rows = [
-    { status: <LiveStatus />, stage: "dev", version: "0.1.0", by: "fernando", when: "just now" },
-    { status: <Badge tone="success">Successful</Badge>, stage: "prod", version: "0.1.0", by: "fernando", when: "2h ago" },
-    { status: <Badge tone="danger">Failed</Badge>, stage: "dev", version: "0.0.9", by: "ci", when: "yesterday" },
+    { status: <LiveStatus />, stage: "dev", version: "0.0.2", duration: "—", by: "fernando", when: "just now" },
+    { status: <Badge tone="success">Successful</Badge>, stage: "prod", version: "0.0.1", duration: "48s", by: "fernando", when: "2h ago" },
+    { status: <Badge tone="danger">Failed</Badge>, stage: "dev", version: "0.0.1", duration: "12s", by: "ci", when: "yesterday" },
   ];
+  const field = "flex h-9 items-center gap-2 rounded-md border border-border bg-background px-3 font-mono text-xs";
   return (
-    <Frame active="Projects" title="shop-api · Deployments">
-      <div className="grid grid-cols-1 gap-3 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+    <div className="space-y-4">
+      <Frame active="Projects" title="shop-api · New deployment">
+        <div className="grid grid-cols-1 gap-3 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+          <Panel>
+            <PanelHeader title="Deploy" aside={<Badge className="font-mono">aws/lambda</Badge>} />
+            <PanelBody className="space-y-3">
+              <div className="grid grid-cols-2 gap-3">
+                <div><div className="mb-1 text-xs text-secondary">Release</div><div className={field}><Tag className="size-3.5 text-secondary" strokeWidth={1.75} />0.0.2<ChevronDown className="ml-auto size-3.5 text-secondary" strokeWidth={1.75} /></div></div>
+                <div><div className="mb-1 text-xs text-secondary">Scope</div><div className={field}><Cloud className="size-3.5 text-secondary" strokeWidth={1.75} />dev<ChevronDown className="ml-auto size-3.5 text-secondary" strokeWidth={1.75} /></div></div>
+              </div>
+              <div className="flex gap-2 border-t border-border-subtle pt-3">
+                <span className="inline-flex h-9 items-center gap-1.5 rounded-md bg-primary px-3 text-xs font-medium text-primary-foreground"><Rocket className="size-3.5" strokeWidth={1.75} /> Deploy to dev</span>
+                <span className="inline-flex h-9 items-center gap-1.5 rounded-md border border-border px-3 text-xs"><ListChecks className="size-3.5" strokeWidth={1.75} /> Run preflight</span>
+              </div>
+            </PanelBody>
+          </Panel>
+          <Panel className="hidden lg:block">
+            <PanelHeader title="Summary" />
+            <div className="divide-y divide-border-subtle text-xs">
+              {[["Target", "aws/lambda"], ["Release", "v0.0.2 · stable"], ["Scope", "dev"], ["Version", "0.0.2"]].map(([k, v]) => <div key={k} className="flex gap-3 px-4 py-2.5"><span className="w-16 text-secondary">{k}</span><span className="font-mono">{v}</span></div>)}
+            </div>
+          </Panel>
+        </div>
+      </Frame>
+      <Frame active="Projects" title="shop-api · Deployments">
         <Panel>
-          <PanelHeader title="Deploy" aside={<Badge className="font-mono">aws/lambda</Badge>} />
-          <PanelBody className="space-y-3">
-            <div className="grid grid-cols-2 gap-3">
-              <div><div className="mb-1 text-xs text-secondary">Release</div><div className="flex h-9 items-center gap-2 rounded-md border border-border bg-background px-3 font-mono text-xs"><Tag className="size-3.5 text-secondary" strokeWidth={1.75} />0.1.0<ChevronDown className="ml-auto size-3.5 text-secondary" strokeWidth={1.75} /></div></div>
-              <div><div className="mb-1 text-xs text-secondary">Environment</div><div className="flex h-9 items-center gap-2 rounded-md border border-border bg-background px-3 font-mono text-xs"><Cloud className="size-3.5 text-secondary" strokeWidth={1.75} />dev<ChevronDown className="ml-auto size-3.5 text-secondary" strokeWidth={1.75} /></div></div>
-            </div>
-            <div className="flex gap-2 border-t border-border-subtle pt-3">
-              <span className="inline-flex h-9 items-center gap-1.5 rounded-md bg-primary px-3 text-xs font-medium text-primary-foreground"><Rocket className="size-3.5" strokeWidth={1.75} /> Deploy to dev</span>
-              <span className="inline-flex h-9 items-center gap-1.5 rounded-md border border-border px-3 text-xs"><ListChecks className="size-3.5" strokeWidth={1.75} /> Run preflight</span>
-            </div>
-          </PanelBody>
-        </Panel>
-        <Panel className="hidden lg:block">
-          <PanelHeader title="Target" />
+          <PanelHeader title="Deployments" aside={<span className="inline-flex h-8 items-center gap-1.5 rounded-md bg-primary px-3 text-xs font-medium text-primary-foreground"><Rocket className="size-3.5" strokeWidth={1.75} /> New deployment</span>} />
           <div className="divide-y divide-border-subtle text-xs">
-            {[["Target", "aws/lambda"], ["Region", "us-east-1"], ["App", "acme/shop/shop-api"]].map(([k, v]) => <div key={k} className="flex gap-3 px-4 py-2.5"><span className="w-16 text-secondary">{k}</span><span className="font-mono">{v}</span></div>)}
+            <div className="flex items-center gap-3 px-4 py-2 text-secondary">
+              <span className="w-24 shrink-0">Status</span>
+              <span className="w-12 shrink-0">Stage</span>
+              <span className="hidden w-14 shrink-0 md:inline">Type</span>
+              <span className="w-14 shrink-0">Version</span>
+              <span className="hidden w-14 shrink-0 text-right md:inline">Duration</span>
+              <span className="hidden w-20 shrink-0 lg:inline">By</span>
+              <span className="ml-auto hidden md:inline">Started</span>
+              <span className="sr-only">Actions</span>
+              <MoreHorizontal className="size-3.5 opacity-0" strokeWidth={1.75} aria-hidden />
+            </div>
+            {rows.map((r, i) => (
+              <div key={i} className="flex items-center gap-3 px-4 py-2.5">
+                <span className="w-24 shrink-0">{r.status}</span>
+                <span className="w-12 shrink-0 font-mono">{r.stage}</span>
+                <span className="hidden w-14 shrink-0 text-secondary md:inline">Deploy</span>
+                <span className="w-14 shrink-0 font-mono">{r.version}</span>
+                <span className="hidden w-14 shrink-0 text-right text-secondary md:inline">{r.duration}</span>
+                <span className="hidden w-20 shrink-0 truncate text-secondary lg:inline">{r.by}</span>
+                <span className="ml-auto hidden text-secondary md:inline">{r.when}</span>
+                <MoreHorizontal className="size-3.5 text-secondary" strokeWidth={1.75} aria-hidden />
+              </div>
+            ))}
           </div>
         </Panel>
-      </div>
-      <Panel className="mt-3">
-        <PanelHeader title="Deployment history" aside={<span className="text-xs text-secondary">3 runs · last 20</span>} />
-        <ul className="divide-y divide-border-subtle text-xs">
-          {rows.map((r, i) => (
-            <li key={i} className="flex items-center gap-3 px-4 py-2.5">
-              {r.status}
-              <span className="font-mono">{r.stage}</span>
-              <span className="text-secondary">Deploy</span>
-              <span className="font-mono">{r.version}</span>
-              <span className="ml-auto hidden text-secondary sm:inline">{r.by} · {r.when}</span>
-              <ChevronDown className="size-3.5 text-secondary" strokeWidth={1.75} />
-            </li>
-          ))}
-        </ul>
-      </Panel>
-    </Frame>
+      </Frame>
+    </div>
   );
 }
 
@@ -121,23 +143,25 @@ export function ProjectsScreen() {
 }
 
 export function ReleasesScreen() {
+  const field = "flex h-9 items-center gap-2 rounded-md border border-border bg-background px-3 font-mono text-xs";
   return (
-    <Frame active="Projects" title="shop-api · Releases">
+    <Frame active="Projects" title="shop-api · New release">
       <Panel>
         <PanelHeader title="Create release" aside={<Badge tone="ok">Stable</Badge>} />
         <PanelBody className="grid grid-cols-1 gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
           <div className="space-y-3 md:border-r md:border-border-subtle md:pr-4">
-            <div><div className="mb-1 text-xs text-secondary">Branch</div><div className="flex h-9 items-center gap-2 rounded-md border border-border bg-background px-3 font-mono text-xs"><GitBranch className="size-3.5 text-secondary" strokeWidth={1.75} />main<ChevronDown className="ml-auto size-3.5 text-secondary" strokeWidth={1.75} /></div></div>
+            <div><div className="mb-1 text-xs text-secondary">Component</div><div className={field}><Layers className="size-3.5 text-secondary" strokeWidth={1.75} />shop-api<span className="text-secondary">root</span><ChevronDown className="ml-auto size-3.5 text-secondary" strokeWidth={1.75} /></div></div>
+            <div><div className="mb-1 text-xs text-secondary">Branch</div><div className={field}><GitBranch className="size-3.5 text-secondary" strokeWidth={1.75} />main<ChevronDown className="ml-auto size-3.5 text-secondary" strokeWidth={1.75} /></div></div>
             <div>
               <div className="mb-1 text-xs text-secondary">Version</div>
               <div className="flex items-center gap-3">
                 <div className="inline-flex h-8 overflow-hidden rounded-md border border-border text-xs"><span className="bg-surface-selected px-3 leading-8">Patch</span><span className="px-3 leading-8 text-secondary">Minor</span><span className="px-3 leading-8 text-secondary">Major</span></div>
-                <span className="font-mono text-xs text-secondary">0.1.0</span><span className="text-secondary">→</span><span className="font-mono text-sm font-semibold">0.1.1</span>
+                <span className="font-mono text-xs text-secondary">0.0.1</span><span className="text-secondary">→</span><span className="font-mono text-sm font-semibold">0.0.2</span>
               </div>
             </div>
           </div>
           <div className="space-y-3">
-            <div><div className="mb-1 text-xs text-secondary">Name</div><div className="h-9 rounded-md border border-border bg-background px-3 text-xs leading-9">Release 0.1.1</div></div>
+            <div><div className="mb-1 text-xs text-secondary">Name</div><div className="h-9 rounded-md border border-border bg-background px-3 text-xs leading-9">Release 0.0.2</div></div>
             <div><div className="mb-1 text-xs text-secondary">Notes (optional)</div><div className="h-14 rounded-md border border-border bg-background px-3 py-2 font-mono text-xs text-muted-foreground">What changed, in your words…</div></div>
           </div>
         </PanelBody>
